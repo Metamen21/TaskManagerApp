@@ -12,7 +12,9 @@ opt.UseSqlServer(
     )
 );
 
-
+// Add Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -22,6 +24,13 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+// Enable Swagger in development
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseAuthorization();
 
