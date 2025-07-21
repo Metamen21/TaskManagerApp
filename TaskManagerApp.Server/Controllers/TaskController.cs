@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TaskManagerApp.Server.Data;
 using TaskManagerApp.Server.Models;
@@ -61,3 +65,5 @@ namespace TaskManagerApp.Server.Controllers
 
     }
 }
+
+
