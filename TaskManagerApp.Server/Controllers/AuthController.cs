@@ -28,7 +28,7 @@ namespace TaskManagerApp.Server.Controllers
         {
             // Generate a salt and hash the password using BCrypt
             string salt = BCrypt.Net.BCrypt.GenerateSalt(12);
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password, salt);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
             var user = new User { Email = userDto.Email, PasswordHash = hashedPassword };
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
