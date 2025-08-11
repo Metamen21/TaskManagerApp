@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TaskManagerApp.Server;
 using TaskManagerApp.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 opt.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
