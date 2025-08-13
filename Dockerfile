@@ -35,6 +35,10 @@ COPY . .
 RUN rm -rf TaskManagerApp.Server/wwwroot/*
 COPY --from=frontend /app/taskmanagerapp.client/dist/ TaskManagerApp.Server/wwwroot/
 
+# Remove dist folder so dotnet publish doesn't see it twice
+RUN rm -rf taskmanagerapp.client/dist
+
+
 # Publish backend
 WORKDIR /src/TaskManagerApp.Server
 RUN dotnet publish TaskManagerApp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false  /p:BuildProjectReferences=false
