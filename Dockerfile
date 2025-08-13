@@ -43,4 +43,5 @@ RUN dotnet publish TaskManagerApp.Server.csproj \
 # ========================
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=backend-build /app/pub
+COPY --from=backend-build /app/publish .
+
