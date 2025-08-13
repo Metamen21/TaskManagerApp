@@ -37,7 +37,7 @@ COPY --from=frontend /app/taskmanagerapp.client/dist/ TaskManagerApp.Server/wwwr
 
 # Publish backend
 WORKDIR /src/TaskManagerApp.Server
-RUN dotnet publish TaskManagerApp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish TaskManagerApp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false  /p:BuildProjectReferences=false
 
 # ========================
 # 3️⃣ Runtime Stage
