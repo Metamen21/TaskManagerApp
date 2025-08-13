@@ -18,6 +18,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+# Install Node.js in backend stage (needed for .esproj build)
+RUN apt-get update && apt-get install -y curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest
+
 # Copy csproj and restore
 COPY TaskManagerApp.Server/TaskManagerApp.Server.csproj TaskManagerApp.Server/
 RUN dotnet restore TaskManagerApp.Server/TaskManagerApp.Server.csproj
