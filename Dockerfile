@@ -18,12 +18,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Install Node.js in backend stage (needed for .esproj build)
-RUN apt-get update && apt-get install -y curl \
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm@latest
-
 # Copy csproj and restore
 COPY TaskManagerApp.Server/TaskManagerApp.Server.csproj TaskManagerApp.Server/
 RUN dotnet restore TaskManagerApp.Server/TaskManagerApp.Server.csproj
@@ -35,13 +29,18 @@ COPY . .
 RUN rm -rf TaskManagerApp.Server/wwwroot/*
 COPY --from=frontend /app/taskmanagerapp.client/dist/ TaskManagerApp.Server/wwwroot/
 
-# Remove dist folder so dotnet publish doesn't see it twice
+# Remove dist folder entirely so MSBuild won't re-scan it
 RUN rm -rf taskmanagerapp.client/dist
 
-
-# Publish backend
+# Publish backend without re-building client and without static asset re-scan
 WORKDIR /src/TaskManagerApp.Server
-RUN dotnet publish TaskManagerApp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false  /p:BuildProjectReferences=false
+RUN dotnet publish TaskManagerApp.Server.csproj \
+    -c $BUILD_CONFIGURATION \
+    -o /app/publish \
+    /p:UseAppHost=false \
+    /p:BuildProjectReferences=false \
+    /p:SkipStaticWebAssetCopyToOutput=true \
+    /p:StaticWebAssetsEnabled=false
 
 # ========================
 # 3️⃣ Runtime Stage
