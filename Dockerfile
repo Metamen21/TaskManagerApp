@@ -1,7 +1,9 @@
 ﻿# ========================
 # 1️⃣ Frontend Build Stage
 # ========================
-FROM node:20 AS frontend
+#FROM node:20 AS frontend
+FROM node:20-alpine AS frontend
+
 WORKDIR /app
 
 # Copy and build frontend
@@ -13,7 +15,9 @@ RUN npm run build
 # ========================
 # 2️⃣ Backend Build Stage
 # ========================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
+#FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS backend-build
+
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
