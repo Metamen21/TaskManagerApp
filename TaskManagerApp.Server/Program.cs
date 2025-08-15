@@ -35,6 +35,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// ==============================
+// Auto-create/migrate database
+// ==============================
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate(); // Creates DB and applies migrations
+}
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -43,11 +52,11 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 // Enable Swagger in development
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 app.UseAuthentication();
 app.UseAuthorization();
 
